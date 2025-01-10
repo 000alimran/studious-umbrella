@@ -15,24 +15,28 @@ document.getElementById('searchBtn').addEventListener('click', async () => {
             // Switch to Result Page
             homePage.style.display = 'none';
             resultPage.style.display = 'block';
-            resultsDiv.innerHTML = 'Loading...';
+            resultsDiv.innerHTML = '';
 
             if (data.results && data.results.length > 0) {
-                resultsDiv.innerHTML = '';
                 data.results.forEach(movie => {
                     const movieDiv = document.createElement('div');
+                    movieDiv.classList.add('col-md-4', 'mb-4'); // Bootstrap গ্রিড ক্লাস
                     movieDiv.innerHTML = `
-                        <h3>${movie.title}</h3>
-                        <img src="${posterBaseUrl + movie.poster_path}" alt="${movie.title}" style="width: 100%; border-radius: 8px; margin-top: 10px;">
-                        <p>${movie.overview || 'No description available.'}</p>
+                        <div class="card h-100">
+                          <img src="${posterBaseUrl + movie.poster_path}" class="card-img-top" alt="${movie.title}">
+                          <div class="card-body">
+                            <h5 class="card-title">${movie.title}</h5>
+                            <p class="card-text">${movie.overview || 'No description available.'}</p>
+                          </div>
+                        </div>
                     `;
                     resultsDiv.appendChild(movieDiv);
                 });
             } else {
-                resultsDiv.innerHTML = 'No results found.';
+                resultsDiv.innerHTML = '<p class="text-center">No results found.</p>';
             }
         } catch (error) {
-            resultsDiv.innerHTML = 'Error fetching data. Please try again.';
+            resultsDiv.innerHTML = '<p class="text-center text-danger">Error fetching data. Please try again.</p>';
         }
     } else {
         alert('Please enter a movie name to search.');
